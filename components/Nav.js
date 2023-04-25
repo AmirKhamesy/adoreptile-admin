@@ -50,7 +50,9 @@ export default function Nav() {
         </Link>
         <Link
           href={"/products"}
-          className={pathname === "/products" ? selectedLink : notSelectedLink}
+          className={
+            pathname.includes("/products") ? selectedLink : notSelectedLink
+          }
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

@@ -20,8 +20,7 @@ export default function Layout({ children }) {
   return (
     <div className="bg-green-500 min-h-screen flex">
       <Nav />
-      <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-1">
-        Signed in as {session.user.email}
+      <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg py-4 px-3">
         {children}
       </div>
     </div>
