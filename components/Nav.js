@@ -30,7 +30,7 @@ export default function Nav() {
           />
         </svg>
 
-        <span className="">Adoreptile</span>
+        <span className="mr-5">Adoreptile</span>
       </a>
       <nav className="flex flex-col gap-2">
         <Link
