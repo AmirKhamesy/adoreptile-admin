@@ -6,14 +6,13 @@ import Image from "next/image";
 export default function Home() {
   const { data: session } = useSession();
 
-  if (!session) {
-    return <Layout />;
-  }
   return (
     <Layout>
-      <div>
-        <p>Hello {session?.user?.name}</p>
-      </div>
+      {session && (
+        <div>
+          <p>Hello {session?.user?.name}</p>
+        </div>
+      )}
     </Layout>
   );
 }
