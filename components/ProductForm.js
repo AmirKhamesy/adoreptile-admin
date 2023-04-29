@@ -17,7 +17,7 @@ export default function ProductForm({
 
   async function createProduct(e) {
     e.preventDefault();
-    const data = { title, description, price };
+    const data = { title, description, price, images };
     if (_id) {
       // Update
       await axios.put("/api/products", { ...data, _id });
@@ -83,7 +83,6 @@ export default function ProductForm({
           <div>Upload</div>
           <input onChange={uploadImages} type="file" className="hidden"></input>
         </label>
-        {!images?.length && <div> No photos</div>}
       </div>
       <label>Description</label>
       <textarea
