@@ -7,11 +7,12 @@ export default function ProductForm({
   title: currentTitle,
   description: currentDescription,
   price: currentPrice,
-  images,
+  images: existingImages,
 }) {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
+  const [images, setImages] = useState([]);
   const [returnHome, setReturnHome] = useState(false);
 
   async function createProduct(e) {
@@ -38,12 +39,12 @@ export default function ProductForm({
       for (const file of files) {
         data.append("file", file);
       }
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
+      const response = await axios.post("/api/upload", data);
+      const newImages = response.data.links;
+      setImages((oldImages) => {
+        return [...oldImages, ...newImages];
       });
-
-      console.log(response);
+      console.log(response.data);
     }
   }
 
@@ -57,7 +58,13 @@ export default function ProductForm({
         onChange={(e) => setTitle(e.target.value)}
       ></input>
       <label>Photo</label>
-      <div className="mb-2">
+      <div className="mb-2 flex flex-wrap gap-2">
+        {!!images?.length &&
+          images.map((image) => (
+            <div key={image} className="h-24">
+              <img src={image} alt="" className="rounded-lg" />
+            </div>
+          ))}
         <label className="w-24 h-24 text-center flex items-center justify-center text-sm gap-1 text-gray-500 rounded-lg bg-gray-200 cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
