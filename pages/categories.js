@@ -12,6 +12,7 @@ function Categories({ swal }) {
 
   useEffect(() => {
     getCategories();
+    console.log(categories);
   }, []);
 
   function getCategories() {
@@ -94,11 +95,16 @@ function Categories({ swal }) {
           >
             <option value="">No parent category</option>
             {categories?.length > 0 &&
-              categories.map((category) => (
-                <option value={category._id} key={category._id + category.name}>
-                  {category.name}
-                </option>
-              ))}
+              categories
+                .filter((category) => category.parent === null)
+                .map((category) => (
+                  <option
+                    value={category._id}
+                    key={category._id + category.name}
+                  >
+                    {category.name}
+                  </option>
+                ))}
           </select>
           <button type="submit" className="btn-primary">
             Save
