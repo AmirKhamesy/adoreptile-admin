@@ -2,6 +2,7 @@ import axios from "axios";
 import { router } from "next/router";
 import { useState } from "react";
 import Spinner from "./Spinner";
+import { ReactSortable } from "react-sortablejs";
 
 export default function ProductForm({
   _id,
@@ -13,7 +14,7 @@ export default function ProductForm({
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(existingImages || []);
   const [returnHome, setReturnHome] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
@@ -51,6 +52,10 @@ export default function ProductForm({
     }
   }
 
+  function updateImageOrder(images) {
+    setImages(images);
+  }
+
   return (
     <form onSubmit={createProduct}>
       <label>Product name</label>
@@ -62,12 +67,18 @@ export default function ProductForm({
       ></input>
       <label>Photo</label>
       <div className="mb-2 flex flex-wrap gap-1">
-        {!!images?.length &&
-          images.map((image) => (
-            <div key={image} className="h-24">
-              <img src={image} alt="" className="rounded-lg" />
-            </div>
-          ))}
+        <ReactSortable
+          list={images}
+          className="flex flex-wrap gap-1"
+          setList={updateImageOrder}
+        >
+          {!!images?.length &&
+            images.map((image) => (
+              <div key={image} className="h-24">
+                <img src={image} alt="" className="rounded-lg" />
+              </div>
+            ))}
+        </ReactSortable>
         {isUploading && (
           <div className="w-24 h-24 rounded-md flex items-center">
             <Spinner />
