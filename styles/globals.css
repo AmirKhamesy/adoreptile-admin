@@ -7,13 +7,15 @@ img {
 }
 
 input,
-textarea {
+textarea,
+select {
   @apply border-2 border-gray-300 rounded-md px-1 w-full;
   @apply mb-2;
 }
 
 input:focus,
-textarea:focus {
+textarea:focus,
+select:focus {
   @apply border-green-500 outline-none;
 }
 
@@ -38,7 +40,7 @@ table.primary thead tr td {
 }
 
 table.primary tr td {
-  @apply border border-green-700 p-1;
+  @apply border border-green-300 p-1;
 }
 
 table.primary a {
