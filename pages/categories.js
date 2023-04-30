@@ -12,7 +12,6 @@ function Categories({ swal }) {
 
   useEffect(() => {
     getCategories();
-    console.log(categories);
   }, []);
 
   function getCategories() {

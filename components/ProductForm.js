@@ -1,6 +1,6 @@
 import axios from "axios";
 import { router } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Spinner from "./Spinner";
 import { ReactSortable } from "react-sortablejs";
 
@@ -10,6 +10,7 @@ export default function ProductForm({
   description: currentDescription,
   price: currentPrice,
   images: existingImages,
+  category: currentCategory,
 }) {
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
@@ -17,10 +18,18 @@ export default function ProductForm({
   const [images, setImages] = useState(existingImages || []);
   const [returnHome, setReturnHome] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [category, setCategory] = useState("");
+
+  useEffect(() => {
+    axios.get("/api/categories").then((response) => {
+      setCategories(response.data);
+    });
+  }, []);
 
   async function createProduct(e) {
     e.preventDefault();
-    const data = { title, description, price, images };
+    const data = { title, description, price, images, category };
     if (_id) {
       // Update
       await axios.put("/api/products", { ...data, _id });
@@ -65,6 +74,23 @@ export default function ProductForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       ></input>
+      <label>Category</label>
+      <select
+        value={
+          category || currentCategory._id
+        } /*Show current category or newly selected one */
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        <option value="">Uncategorized</option>
+        {categories.length > 0 &&
+          categories
+            .filter((category) => !!category.parent)
+            .map((category) => (
+              <option key={category._id} value={category._id}>
+                {category.name}
+              </option>
+            ))}
+      </select>
       <label>Photo</label>
       <div className="mb-2 flex flex-wrap gap-1">
         <ReactSortable
