@@ -32,6 +32,8 @@ function Categories({ swal }) {
       await axios.post("/api/categories", data);
     }
     setName("");
+    setEditingCategory(null);
+    setParentCategory(null);
     getCategories();
   }
 
@@ -53,6 +55,13 @@ function Categories({ swal }) {
       })
       .then(async (results) => {
         if (results.isConfirmed) {
+          if (name === category.name) {
+            //Reset fields if currently selected name is being deleted
+            setName("");
+            setEditingCategory(null);
+            setParentCategory(null);
+            getCategories();
+          }
           await axios.delete("/api/categories?_id=" + category._id);
           getCategories();
         }
@@ -79,9 +88,9 @@ function Categories({ swal }) {
           ></input>
           <select
             className="mb-0"
-            value={parentCategory}
+            value={parentCategory || ""}
             onChange={(e) =>
-              setParentCategory(e.target.value || null)
+              setParentCategory(e.target.value)
             } /*HACK: Using null for unsetting values in server */
           >
             <option value="">No parent category</option>
