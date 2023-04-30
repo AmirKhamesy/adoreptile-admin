@@ -76,7 +76,6 @@ function Categories({ swal }) {
           ? `Editing category "${editingCategory.name}"`
           : "New category name"}
       </label>
-      {parentCategory}
       <form onSubmit={saveCategory}>
         <div className="flex gap-1">
           <input
@@ -90,7 +89,7 @@ function Categories({ swal }) {
             className="mb-0"
             value={parentCategory || ""}
             onChange={(e) =>
-              setParentCategory(e.target.value)
+              setParentCategory(e.target.value || null)
             } /*HACK: Using null for unsetting values in server */
           >
             <option value="">No parent category</option>
