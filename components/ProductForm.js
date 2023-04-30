@@ -1,6 +1,7 @@
 import axios from "axios";
 import { router } from "next/router";
 import { useState } from "react";
+import Spinner from "./Spinner";
 
 export default function ProductForm({
   _id,
@@ -14,6 +15,7 @@ export default function ProductForm({
   const [price, setPrice] = useState(currentPrice || "");
   const [images, setImages] = useState([]);
   const [returnHome, setReturnHome] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
 
   async function createProduct(e) {
     e.preventDefault();
@@ -35,6 +37,7 @@ export default function ProductForm({
   async function uploadImages(e) {
     const files = e.target?.files;
     if (files?.length > 0) {
+      setIsUploading(true);
       const data = new FormData();
       for (const file of files) {
         data.append("file", file);
@@ -44,7 +47,7 @@ export default function ProductForm({
       setImages((oldImages) => {
         return [...oldImages, ...newImages];
       });
-      console.log(response.data);
+      setIsUploading(false);
     }
   }
 
@@ -58,13 +61,18 @@ export default function ProductForm({
         onChange={(e) => setTitle(e.target.value)}
       ></input>
       <label>Photo</label>
-      <div className="mb-2 flex flex-wrap gap-2">
+      <div className="mb-2 flex flex-wrap gap-1">
         {!!images?.length &&
           images.map((image) => (
             <div key={image} className="h-24">
               <img src={image} alt="" className="rounded-lg" />
             </div>
           ))}
+        {isUploading && (
+          <div className="w-24 h-24 rounded-md flex items-center">
+            <Spinner />
+          </div>
+        )}
         <label className="w-24 h-24 text-center flex items-center justify-center text-sm gap-1 text-gray-500 rounded-lg bg-gray-200 cursor-pointer">
           <svg
             xmlns="http://www.w3.org/2000/svg"
