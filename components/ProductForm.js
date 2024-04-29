@@ -43,41 +43,17 @@ export default function ProductForm({
   if (returnHome) {
     router.push("/products");
   }
-  //GUIDE FOR BASE64 CONVERSION : https://medium.com/nerd-for-tech/how-to-store-an-image-to-a-database-with-react-using-base-64-9d53147f6c4f
-  const convertToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
-    });
-  };
-  const handleFileUpload = async (e) => {
-    const file = e.target.files[0];
-    const base64 = await convertToBase64(file);
-    setPostImage({ ...postImage, myFile: base64 });
-  };
 
   async function uploadImages(e) {
     const files = e.target?.files;
     if (files?.length > 0) {
       setIsUploading(true);
-      let encodedImages = [];
+      const data = new FormData();
       for (const file of files) {
-        encodedImages.concat({
-          imageName: file.name,
-          imageData: await convertToBase64(file),
-        });
+        data.append("file", file);
       }
-      const response = await axios.post("/api/upload", {
-        productId: _id,
-        encodedImages,
-      });
-      const newImages = response.data.images;
+      const response = await axios.post("/api/upload", data);
+      const newImages = response.data.links;
       setImages((oldImages) => {
         return [...oldImages, ...newImages];
       });
@@ -150,14 +126,7 @@ export default function ProductForm({
             />
           </svg>
           <div>Upload</div>
-          <input
-            onChange={uploadImages}
-            type="file"
-            className="hidden"
-            label="Image"
-            name="myFile"
-            accept=".jpeg, .png, .jpg"
-          ></input>
+          <input onChange={uploadImages} type="file" className="hidden"></input>
         </label>
       </div>
       <label>Description</label>
