@@ -1,10 +1,10 @@
-import Layout from "@/components/Layout";
 import ProductForm from "@/components/ProductForm";
+import Layout from "@/components/Layout";
 
-export default function New() {
+export default function NewProduct() {
   return (
     <Layout>
-      <h1>New product</h1>
+      <h1>New Product</h1>
       <ProductForm />
     </Layout>
   );

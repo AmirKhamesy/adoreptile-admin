@@ -1,5 +1,7 @@
-import BarLoader from "react-spinners/BarLoader";
+import {BounceLoader} from "react-spinners";
 
 export default function Spinner() {
-  return <BarLoader color={"#a0d195"} speedMultiplier={2}></BarLoader>;
+  return (
+    <BounceLoader color={'#1E3A8A'} speedMultiplier={2} />
+  );
 }
