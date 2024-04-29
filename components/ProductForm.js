@@ -101,7 +101,7 @@ export default function ProductForm({
       <label>Category</label>
       <select
         value={
-          category || currentCategory._id
+          category || currentCategory?._id
         } /*Show current category or newly selected one */
         onChange={(e) => setCategory(e.target.value)}
       >
