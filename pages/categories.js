@@ -4,6 +4,7 @@ import axios from "axios";
 import { withSwal } from "react-sweetalert2";
 import Spinner from "@/components/Spinner";
 import { useRouter } from "next/router";
+import { formatDistanceToNow } from "date-fns";
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
@@ -104,7 +105,7 @@ function Categories({ swal }) {
       })
       .then(async (result) => {
         if (result.isConfirmed) {
-          await axios.delete(`/api/products?_id=${productId}`);
+          await axios.delete(`/api/products?id=${productId}`);
           fetchProducts(editedCategory._id);
         }
       });
@@ -239,13 +240,14 @@ function Categories({ swal }) {
             <tr>
               <td>Category name</td>
               <td>Parent category</td>
+              <td>Last Edited</td>
               <td></td>
             </tr>
           </thead>
           <tbody>
             {isLoading && (
               <tr>
-                <td colSpan={3}>
+                <td colSpan={4}>
                   <div className="py-4">
                     <Spinner fullWidth={true} />
                   </div>
@@ -253,26 +255,34 @@ function Categories({ swal }) {
               </tr>
             )}
             {categories.length > 0 &&
-              categories.map((category) => (
-                <tr key={category.id}>
-                  <td>{category.name}</td>
-                  <td>{category?.parent?.name}</td>
-                  <td>
-                    <button
-                      onClick={() => editCategory(category)}
-                      className="btn-default mr-1"
-                    >
-                      Edit
-                    </button>
-                    <button
-                      onClick={() => deleteCategory(category)}
-                      className="btn-red"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              categories
+                .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt))
+                .map((category) => (
+                  <tr key={category.id}>
+                    <td>{category.name}</td>
+                    <td>{category?.parent?.name}</td>
+                    <td>
+                      {formatDistanceToNow(new Date(category.updatedAt), {
+                        addSuffix: true,
+                      })}
+                    </td>
+
+                    <td>
+                      <button
+                        onClick={() => editCategory(category)}
+                        className="btn-default mr-1"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => deleteCategory(category)}
+                        className="btn-red"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
           </tbody>
         </table>
       )}
