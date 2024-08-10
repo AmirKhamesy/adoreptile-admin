@@ -187,7 +187,11 @@ export default function ProductForm({
         value={price}
         onChange={(ev) => setPrice(ev.target.value)}
       />
-      <button type="submit" className="btn-primary">
+      <button
+        type="submit"
+        className="btn-primary"
+        disabled={!category || !title || !price}
+      >
         Save
       </button>
     </form>
