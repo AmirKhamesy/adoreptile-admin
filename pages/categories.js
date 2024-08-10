@@ -3,17 +3,23 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { withSwal } from "react-sweetalert2";
 import Spinner from "@/components/Spinner";
+import { useRouter } from "next/router";
 
 function Categories({ swal }) {
   const [editedCategory, setEditedCategory] = useState(null);
   const [name, setName] = useState("");
   const [parentCategory, setParentCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const [products, setProducts] = useState([]);
   const [properties, setProperties] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [isProductLoading, setIsProductLoading] = useState(false);
+  const router = useRouter();
+
   useEffect(() => {
     fetchCategories();
   }, []);
+
   function fetchCategories() {
     setIsLoading(true);
     axios.get("/api/categories").then((result) => {
@@ -21,6 +27,14 @@ function Categories({ swal }) {
       setIsLoading(false);
     });
   }
+
+  async function fetchProducts(categoryId) {
+    setIsProductLoading(true);
+    const result = await axios.get(`/api/products?category=${categoryId}`);
+    setProducts(result.data);
+    setIsProductLoading(false);
+  }
+
   async function saveCategory(ev) {
     ev.preventDefault();
     const data = {
@@ -43,6 +57,7 @@ function Categories({ swal }) {
     setProperties([]);
     fetchCategories();
   }
+
   function editCategory(category) {
     setEditedCategory(category);
     setName(category.name);
@@ -53,7 +68,9 @@ function Categories({ swal }) {
         values: values.join(","),
       }))
     );
+    fetchProducts(category._id);
   }
+
   function deleteCategory(category) {
     swal
       .fire({
@@ -73,11 +90,32 @@ function Categories({ swal }) {
         }
       });
   }
+
+  function deleteProduct(productId) {
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: `Do you want to delete this product?`,
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Yes, Delete!",
+        confirmButtonColor: "#d55",
+        reverseButtons: true,
+      })
+      .then(async (result) => {
+        if (result.isConfirmed) {
+          await axios.delete(`/api/products?_id=${productId}`);
+          fetchProducts(editedCategory._id);
+        }
+      });
+  }
+
   function addProperty() {
     setProperties((prev) => {
       return [...prev, { name: "", values: "" }];
     });
   }
+
   function handlePropertyNameChange(index, property, newName) {
     setProperties((prev) => {
       const properties = [...prev];
@@ -85,6 +123,7 @@ function Categories({ swal }) {
       return properties;
     });
   }
+
   function handlePropertyValuesChange(index, property, newValues) {
     setProperties((prev) => {
       const properties = [...prev];
@@ -92,6 +131,7 @@ function Categories({ swal }) {
       return properties;
     });
   }
+
   function removeProperty(indexToRemove) {
     setProperties((prev) => {
       return [...prev].filter((p, pIndex) => {
@@ -99,6 +139,7 @@ function Categories({ swal }) {
       });
     });
   }
+
   return (
     <Layout>
       <h1>Categories</h1>
@@ -180,6 +221,7 @@ function Categories({ swal }) {
                 setName("");
                 setParentCategory("");
                 setProperties([]);
+                setProducts([]);
               }}
               className="btn-default"
             >
@@ -233,6 +275,46 @@ function Categories({ swal }) {
               ))}
           </tbody>
         </table>
+      )}
+
+      {products.length > 0 && (
+        <div className="mt-8">
+          <h2 className="text-xl font-bold mb-4">
+            Products in {editedCategory?.name}
+          </h2>
+          {isProductLoading ? (
+            <Spinner fullWidth={true} />
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {products.map((product) => (
+                <div key={product._id} className="border p-4 rounded-lg">
+                  <h3 className="font-semibold text-l text-black mb-2">
+                    {product.title}
+                  </h3>
+                  <p className="text-gray-500 mb-4 overflow-hidden text-ellipsis whitespace-nowrap">
+                    {product.description}
+                  </p>
+                  <div className="flex justify-between">
+                    <button
+                      onClick={() =>
+                        router.push(`/products/edit/${product._id}`)
+                      }
+                      className="btn-primary"
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={() => deleteProduct(product._id)}
+                      className="btn-red"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       )}
     </Layout>
   );
