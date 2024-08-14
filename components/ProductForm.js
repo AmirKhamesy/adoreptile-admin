@@ -33,6 +33,23 @@ export default function ProductForm({
       setCategoriesLoading(false);
     });
   }, []);
+
+  useEffect(() => {
+    // Ensure productProperties are initialized with default values
+    if (categories.length > 0 && category) {
+      let catInfo = categories.find(({ _id }) => _id === category);
+      const newProductProps = { ...productProperties };
+
+      catInfo.properties.forEach((p) => {
+        if (!newProductProps[p.name]) {
+          newProductProps[p.name] = p.values[0]; // Set default value to the first option
+        }
+      });
+
+      setProductProperties(newProductProps);
+    }
+  }, [category, categories]);
+
   async function saveProduct(ev) {
     ev.preventDefault();
     const data = {
