@@ -72,24 +72,59 @@ function Categories({ swal }) {
     fetchProducts(category._id);
   }
 
-  function deleteCategory(category) {
-    swal
-      .fire({
-        title: "Are you sure?",
-        text: `Do you want to delete ${category.name}?`,
-        showCancelButton: true,
-        cancelButtonText: "Cancel",
-        confirmButtonText: "Yes, Delete!",
-        confirmButtonColor: "#d55",
-        reverseButtons: true,
-      })
-      .then(async (result) => {
-        if (result.isConfirmed) {
-          const { _id } = category;
-          await axios.delete("/api/categories?_id=" + _id);
-          fetchCategories();
-        }
-      });
+  async function deleteCategory(category) {
+    // Fetch the products associated with the category
+    const result = await axios.get(`/api/products?category=${category._id}`);
+    const associatedProducts = result.data;
+
+    // If there are associated products, warn the user
+    if (associatedProducts.length > 0) {
+      swal
+        .fire({
+          title: "Warning!",
+          text: `The category "${category.name}" has ${associatedProducts.length} associated product(s). Deleting this category will also delete these products. Do you want to proceed?`,
+          icon: "warning",
+          showCancelButton: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Yes, Delete!",
+          confirmButtonColor: "#d55",
+          reverseButtons: true,
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            await axios.delete(`/api/categories?_id=${category._id}`);
+            fetchCategories();
+            swal.fire(
+              "Deleted!",
+              `The category "${category.name}" and its associated products have been deleted.`,
+              "success"
+            );
+          }
+        });
+    } else {
+      // If no associated products, proceed with deletion
+      swal
+        .fire({
+          title: "Are you sure?",
+          text: `Do you want to delete the category "${category.name}"?`,
+          showCancelButton: true,
+          cancelButtonText: "Cancel",
+          confirmButtonText: "Yes, Delete!",
+          confirmButtonColor: "#d55",
+          reverseButtons: true,
+        })
+        .then(async (result) => {
+          if (result.isConfirmed) {
+            await axios.delete(`/api/categories?_id=${category._id}`);
+            fetchCategories();
+            swal.fire(
+              "Deleted!",
+              `The category "${category.name}" has been deleted.`,
+              "success"
+            );
+          }
+        });
+    }
   }
 
   function deleteProduct(productId) {

@@ -1,6 +1,7 @@
 import { Category } from "@/models/Category";
 import { mongooseConnect } from "@/lib/mongoose";
 import { getServerSession } from "next-auth";
+import { Product } from "@/models/Product";
 import { authOptions, isAdminRequest } from "@/pages/api/auth/[...nextauth]";
 
 export default async function handle(req, res) {
@@ -38,6 +39,8 @@ export default async function handle(req, res) {
   if (method === "DELETE") {
     const { _id } = req.query;
     await Category.deleteOne({ _id });
+    await Product.deleteMany({ category: _id });
+
     res.json("ok");
   }
 }
