@@ -1,6 +1,9 @@
 import { Product } from "@/models/Product";
 import { mongooseConnect } from "@/lib/mongoose";
 import { isAdminRequest } from "@/pages/api/auth/[...nextauth]";
+import { S3Client, DeleteObjectCommand } from "@aws-sdk/client-s3";
+
+const bucketName = "adoreptile";
 
 export default async function handle(req, res) {
   const { method } = req;
@@ -48,7 +51,27 @@ export default async function handle(req, res) {
 
   if (method === "DELETE") {
     if (req.query?.id) {
-      await Product.deleteOne({ _id: req.query?.id });
+      const product = await Product.findOne({ _id: req.query.id });
+
+      const client = new S3Client({
+        region: "us-east-2",
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY,
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+        },
+      });
+
+      for (const imageUrl of product.images) {
+        const Key = imageUrl.split("/").pop();
+        await client.send(
+          new DeleteObjectCommand({
+            Bucket: bucketName,
+            Key: Key,
+          })
+        );
+      }
+
+      await Product.deleteOne({ _id: req.query.id });
       res.json(true);
     }
   }
