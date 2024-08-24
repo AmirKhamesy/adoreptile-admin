@@ -46,6 +46,17 @@ function SettingsPage({ swal }) {
     });
   }
 
+  async function seedDatabase() {
+    setIsLoading(true);
+    await axios.post("/api/seed");
+    await fetchAll();
+    setIsLoading(false);
+    await swal.fire({
+      title: "Database seeded!",
+      icon: "success",
+    });
+  }
+
   return (
     <Layout>
       <h1>Settings</h1>
@@ -70,9 +81,12 @@ function SettingsPage({ swal }) {
             value={shippingFee}
             onChange={(ev) => setShippingFee(ev.target.value)}
           />
-          <div>
+          <div className="flex justify-between">
             <button onClick={saveSettings} className="btn-primary">
               Save settings
+            </button>
+            <button onClick={seedDatabase} className="btn-default">
+              Seed Database
             </button>
           </div>
         </>
