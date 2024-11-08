@@ -21,7 +21,6 @@ export const authOptions = {
   adapter: MongoDBAdapter(clientPromise),
   callbacks: {
     session: async ({ session, token, user }) => {
-      console.log(session);
       if (await isAdminEmail(session?.user?.email)) {
         return session;
       } else {

@@ -14,7 +14,6 @@ function AdminsPage({ swal }) {
     axios
       .post("/api/admins", { email })
       .then((res) => {
-        console.log(res.data);
         swal.fire({
           title: "Admin created!",
           icon: "success",
