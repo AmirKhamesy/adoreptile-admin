@@ -1,0 +1,202 @@
+{
+  "categories": [
+    {
+      "name": "Tools",
+      "properties": [
+        {
+          "name": "type",
+          "values": [
+            "feeders",
+            "dirt",
+            "cleaning",
+            "maintenance",
+            "watering",
+            "trimming",
+            "measuring",
+            "handling"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Isopods",
+      "properties": [
+        {
+          "name": "breed",
+          "values": [
+            "rubber ducky",
+            "zebra",
+            "dairy cow",
+            "giant orange",
+            "powder blue",
+            "red runner",
+            "tiger stripe",
+            "harlequin",
+            "panda king",
+            "ghost",
+            "champagne",
+            "montenegro"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Accessories",
+      "properties": [
+        {
+          "name": "type",
+          "values": [
+            "decoration",
+            "habitat",
+            "lighting",
+            "substrate",
+            "temperature",
+            "humidity"
+          ]
+        }
+      ]
+    }
+  ],
+  "products": [
+    {
+      "title": "Professional Feeding Tongs",
+      "description": "Precision stainless steel tongs for safe and accurate feeding of your isopods. Features soft-grip handles and fine tips.",
+      "price": 24.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Tools",
+      "properties": { "type": "feeders" },
+      "discounts": [
+        {
+          "quantity": 3,
+          "type": "percentage",
+          "value": 10
+        },
+        {
+          "quantity": 5,
+          "type": "percentage",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "title": "Substrate Mixing Tool Set",
+      "description": "Complete set of tools for mixing and preparing isopod substrate. Includes rake, scoop, and mixing paddle.",
+      "price": 34.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Tools",
+      "properties": { "type": "dirt" },
+      "discounts": [
+        {
+          "quantity": 2,
+          "type": "fixed",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "title": "Digital Humidity Gauge",
+      "description": "High-precision digital humidity meter for monitoring isopod habitat conditions.",
+      "price": 29.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Tools",
+      "properties": { "type": "measuring" },
+      "discounts": []
+    },
+    {
+      "title": "Premium Rubber Ducky Isopods (5 Pack)",
+      "description": "Rare and adorable rubber ducky isopods, known for their unique yellow coloration and friendly temperament. Perfect for collectors!",
+      "price": 89.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Isopods",
+      "properties": { "breed": "rubber ducky" },
+      "discounts": [
+        {
+          "quantity": 2,
+          "type": "percentage",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "title": "Dairy Cow Isopods (10 Pack)",
+      "description": "Popular dairy cow isopods with striking black and white patterns. Excellent cleanup crew and very prolific breeders.",
+      "price": 24.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Isopods",
+      "properties": { "breed": "dairy cow" },
+      "discounts": [
+        {
+          "quantity": 3,
+          "type": "percentage",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "title": "Powder Blue Isopods (5 Pack)",
+      "description": "Beautiful powder blue isopods with a stunning pale blue coloration. Peaceful and easy to care for.",
+      "price": 34.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Isopods",
+      "properties": { "breed": "powder blue" },
+      "discounts": []
+    },
+    {
+      "title": "Panda King Isopods (3 Pack)",
+      "description": "Rare panda king isopods with distinctive black and white markings. A must-have for serious collectors.",
+      "price": 79.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Isopods",
+      "properties": { "breed": "panda king" },
+      "discounts": [
+        {
+          "quantity": 2,
+          "type": "fixed",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "title": "Bio-Active Terrarium Kit",
+      "description": "Complete setup for a thriving isopod habitat. Includes substrate, cork bark, moss, and leaf litter.",
+      "price": 49.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Accessories",
+      "properties": { "type": "habitat" },
+      "discounts": [
+        {
+          "quantity": 2,
+          "type": "percentage",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "title": "LED Habitat Light System",
+      "description": "Advanced LED lighting system with day/night cycle programming. Perfect for planted terrariums.",
+      "price": 59.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Accessories",
+      "properties": { "type": "lighting" },
+      "discounts": []
+    },
+    {
+      "title": "Premium Substrate Mix",
+      "description": "Professional-grade substrate mix specially formulated for isopods. Rich in organic matter and minerals.",
+      "price": 19.99,
+      "images": ["https://via.placeholder.com/500"],
+      "categoryName": "Accessories",
+      "properties": { "type": "substrate" },
+      "discounts": [
+        {
+          "quantity": 4,
+          "type": "percentage",
+          "value": 25
+        }
+      ]
+    }
+  ],
+  "settings": {
+    "featuredProductTitle": "Premium Rubber Ducky Isopods (5 Pack)"
+  }
+}
