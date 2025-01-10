@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import { withSwal } from "react-sweetalert2";
+import SeedProgress from "@/components/SeedProgress";
 
 function SettingsPage({ swal }) {
   const [products, setProducts] = useState([]);
   const [featuredProductId, setFeaturedProductId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shippingFee, setShippingFee] = useState("");
+  const [seedSteps, setSeedSteps] = useState([]);
+  const [isSeeding, setIsSeeding] = useState(false);
 
   useEffect(() => {
     setIsLoading(true);
@@ -47,14 +50,124 @@ function SettingsPage({ swal }) {
   }
 
   async function seedDatabase() {
-    setIsLoading(true);
-    await axios.post("/api/seed");
-    await fetchAll();
-    setIsLoading(false);
-    await swal.fire({
-      title: "Database seeded!",
-      icon: "success",
-    });
+    setIsSeeding(true);
+    const steps = [
+      {
+        title: "Reading Seed Data",
+        message: "Loading configuration...",
+        status: "pending",
+      },
+      {
+        title: "Creating Categories",
+        message: "Setting up product categories...",
+        status: "pending",
+      },
+      {
+        title: "Adding Products",
+        message: "Populating product catalog...",
+        status: "pending",
+      },
+      {
+        title: "Setting Featured Product",
+        message: "Configuring featured items...",
+        status: "pending",
+      },
+    ];
+    setSeedSteps(steps);
+
+    try {
+      // Step 1: Start seeding
+      setSeedSteps((current) =>
+        current.map((step, i) =>
+          i === 0 ? { ...step, status: "completed" } : step
+        )
+      );
+
+      const response = await axios.post("/api/seed");
+
+      // Update steps based on the response
+      if (response.data.categoriesAdded === 0) {
+        setSeedSteps((current) =>
+          current.map((step, i) =>
+            i === 1
+              ? {
+                  ...step,
+                  status: "skipped",
+                  message: "Categories already exist",
+                }
+              : step
+          )
+        );
+      } else {
+        setSeedSteps((current) =>
+          current.map((step, i) =>
+            i === 1
+              ? {
+                  ...step,
+                  status: "completed",
+                  message: `Added ${response.data.categoriesAdded} categories`,
+                }
+              : step
+          )
+        );
+      }
+
+      if (response.data.productsAdded === 0) {
+        setSeedSteps((current) =>
+          current.map((step, i) =>
+            i === 2
+              ? {
+                  ...step,
+                  status: "skipped",
+                  message: "Products already exist",
+                }
+              : step
+          )
+        );
+      } else {
+        setSeedSteps((current) =>
+          current.map((step, i) =>
+            i === 2
+              ? {
+                  ...step,
+                  status: "completed",
+                  message: `Added ${response.data.productsAdded} products`,
+                }
+              : step
+          )
+        );
+      }
+
+      setSeedSteps((current) =>
+        current.map((step, i) =>
+          i === 3
+            ? {
+                ...step,
+                status: "completed",
+                message: "Featured product configured",
+              }
+            : step
+        )
+      );
+
+      await fetchAll();
+
+      setTimeout(() => {
+        setIsSeeding(false);
+        swal.fire({
+          title: "Database seeded!",
+          icon: "success",
+        });
+      }, 1000);
+    } catch (error) {
+      console.error("Seed error:", error);
+      setIsSeeding(false);
+      swal.fire({
+        title: "Error",
+        text: "Failed to seed database",
+        icon: "error",
+      });
+    }
   }
 
   return (
@@ -85,12 +198,31 @@ function SettingsPage({ swal }) {
             <button onClick={saveSettings} className="btn-primary">
               Save settings
             </button>
-            <button onClick={seedDatabase} className="btn-default">
-              Seed Database
+            <button
+              onClick={seedDatabase}
+              className="btn-default"
+              disabled={isSeeding}
+            >
+              {isSeeding ? "Seeding..." : "Seed Database"}
             </button>
           </div>
+
+          {isSeeding && seedSteps.length > 0 && (
+            <div className="mt-8">
+              <SeedProgress steps={seedSteps} />
+            </div>
+          )}
         </>
       )}
+      <style jsx>{`
+        .mt-8 {
+          margin-top: 2rem;
+        }
+        button:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      `}</style>
     </Layout>
   );
 }

@@ -12,6 +12,9 @@ export default async function handle(req, res) {
 
   if (req.method === "POST") {
     try {
+      let categoriesAdded = 0;
+      let productsAdded = 0;
+
       // Read the seed data file
       const jsonDirectory = path.join(process.cwd());
       const fileContents = await fs.readFile(
@@ -26,6 +29,7 @@ export default async function handle(req, res) {
         let category = await Category.findOne({ name: categoryData.name });
         if (!category) {
           category = await Category.create(categoryData);
+          categoriesAdded++;
         }
         categoryMap.set(categoryData.name, category._id);
       }
@@ -50,6 +54,7 @@ export default async function handle(req, res) {
 
         if (!existingProduct) {
           await Product.create(productToCreate);
+          productsAdded++;
         }
       }
 
@@ -67,7 +72,11 @@ export default async function handle(req, res) {
         }
       }
 
-      res.json({ success: true });
+      res.json({
+        success: true,
+        categoriesAdded,
+        productsAdded,
+      });
     } catch (error) {
       console.error("Seed error:", error);
       res.status(500).json({ error: error.message });
