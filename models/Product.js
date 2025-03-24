@@ -15,6 +15,13 @@ const ProductSchema = new Schema(
     category: { type: mongoose.Types.ObjectId, ref: "Category" },
     properties: { type: Object },
     discounts: [DiscountSchema],
+    weight: { type: Number }, // Weight in grams
+    dimensions: {
+      length: { type: Number }, // Length in centimeters
+      width: { type: Number }, // Width in centimeters
+      height: { type: Number }, // Height in centimeters
+    },
+    requiresSpecialShipping: { type: Boolean, default: false },
   },
   {
     timestamps: true,

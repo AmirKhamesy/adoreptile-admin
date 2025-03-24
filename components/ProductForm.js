@@ -13,6 +13,9 @@ export default function ProductForm({
   category: assignedCategory,
   properties: assignedProperties,
   discounts: existingDiscounts,
+  weight: existingWeight,
+  dimensions: existingDimensions,
+  requiresSpecialShipping: existingRequiresSpecialShipping,
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDescription || "");
@@ -29,6 +32,17 @@ export default function ProductForm({
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [discountErrors, setDiscountErrors] = useState({});
   const [hasDiscountErrors, setHasDiscountErrors] = useState(false);
+  const [weight, setWeight] = useState(existingWeight || "");
+  const [dimensions, setDimensions] = useState(
+    existingDimensions || {
+      length: "",
+      width: "",
+      height: "",
+    }
+  );
+  const [requiresSpecialShipping, setRequiresSpecialShipping] = useState(
+    existingRequiresSpecialShipping || false
+  );
   const router = useRouter();
   useEffect(() => {
     setCategoriesLoading(true);
@@ -155,6 +169,13 @@ export default function ProductForm({
       category,
       properties: productProperties,
       discounts,
+      weight: weight ? parseFloat(weight) : null,
+      dimensions: {
+        length: dimensions.length ? parseFloat(dimensions.length) : null,
+        width: dimensions.width ? parseFloat(dimensions.width) : null,
+        height: dimensions.height ? parseFloat(dimensions.height) : null,
+      },
+      requiresSpecialShipping,
     };
     if (_id) {
       //update
@@ -346,6 +367,69 @@ export default function ProductForm({
         value={price}
         onChange={(ev) => setPrice(ev.target.value)}
       />
+
+      <h2>Shipping Information</h2>
+      <label>Weight (in grams)</label>
+      <input
+        type="number"
+        placeholder="e.g., 500"
+        value={weight}
+        onChange={(ev) => setWeight(ev.target.value)}
+      />
+
+      <div className="grid grid-cols-3 gap-2">
+        <div>
+          <label>Length (cm)</label>
+          <input
+            type="number"
+            placeholder="Length"
+            value={dimensions.length}
+            onChange={(ev) =>
+              setDimensions({
+                ...dimensions,
+                length: ev.target.value,
+              })
+            }
+          />
+        </div>
+        <div>
+          <label>Width (cm)</label>
+          <input
+            type="number"
+            placeholder="Width"
+            value={dimensions.width}
+            onChange={(ev) =>
+              setDimensions({
+                ...dimensions,
+                width: ev.target.value,
+              })
+            }
+          />
+        </div>
+        <div>
+          <label>Height (cm)</label>
+          <input
+            type="number"
+            placeholder="Height"
+            value={dimensions.height}
+            onChange={(ev) =>
+              setDimensions({
+                ...dimensions,
+                height: ev.target.value,
+              })
+            }
+          />
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2 mt-2">
+        <input
+          type="checkbox"
+          checked={requiresSpecialShipping}
+          onChange={(ev) => setRequiresSpecialShipping(ev.target.checked)}
+        />
+        <label>Requires special shipping handling</label>
+      </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-8">
         <div className="p-6 border-b border-gray-200">
