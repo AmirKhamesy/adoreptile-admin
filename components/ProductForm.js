@@ -13,6 +13,8 @@ export default function ProductForm({
   category: assignedCategory,
   properties: assignedProperties,
   discounts: existingDiscounts,
+  weight: existingWeight,
+  dimensions: existingDimensions,
 }) {
   const [title, setTitle] = useState(existingTitle || "");
   const [description, setDescription] = useState(existingDescription || "");
@@ -29,6 +31,14 @@ export default function ProductForm({
   const [categoriesLoading, setCategoriesLoading] = useState(false);
   const [discountErrors, setDiscountErrors] = useState({});
   const [hasDiscountErrors, setHasDiscountErrors] = useState(false);
+  const [weight, setWeight] = useState(existingWeight || "");
+  const [dimensions, setDimensions] = useState(
+    existingDimensions || {
+      length: "",
+      width: "",
+      height: "",
+    }
+  );
   const router = useRouter();
   useEffect(() => {
     setCategoriesLoading(true);
@@ -155,6 +165,8 @@ export default function ProductForm({
       category,
       properties: productProperties,
       discounts,
+      weight,
+      dimensions,
     };
     if (_id) {
       //update
@@ -346,6 +358,56 @@ export default function ProductForm({
         value={price}
         onChange={(ev) => setPrice(ev.target.value)}
       />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label>Weight (in lbs)</label>
+          <input
+            type="number"
+            step="0.01"
+            min="0"
+            placeholder="Product weight"
+            value={weight}
+            onChange={(ev) => setWeight(ev.target.value)}
+          />
+        </div>
+      </div>
+
+      <div className="mb-4">
+        <label>Dimensions (in cm)</label>
+        <div className="grid grid-cols-3 gap-2">
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            placeholder="Length"
+            value={dimensions.length}
+            onChange={(ev) =>
+              setDimensions({ ...dimensions, length: ev.target.value })
+            }
+          />
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            placeholder="Width"
+            value={dimensions.width}
+            onChange={(ev) =>
+              setDimensions({ ...dimensions, width: ev.target.value })
+            }
+          />
+          <input
+            type="number"
+            step="0.1"
+            min="0"
+            placeholder="Height"
+            value={dimensions.height}
+            onChange={(ev) =>
+              setDimensions({ ...dimensions, height: ev.target.value })
+            }
+          />
+        </div>
+      </div>
 
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 mt-8">
         <div className="p-6 border-b border-gray-200">

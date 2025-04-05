@@ -62,9 +62,17 @@
       "title": "Professional Feeding Tongs",
       "description": "Precision stainless steel tongs for safe and accurate feeding of your isopods. Features soft-grip handles and fine tips.",
       "price": 24.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Tools",
       "properties": { "type": "feeders" },
+      "weight": 0.15,
+      "dimensions": {
+        "length": 20.3,
+        "width": 3.5,
+        "height": 1.2
+      },
       "discounts": [
         {
           "quantity": 3,
@@ -82,9 +90,17 @@
       "title": "Substrate Mixing Tool Set",
       "description": "Complete set of tools for mixing and preparing isopod substrate. Includes rake, scoop, and mixing paddle.",
       "price": 34.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Tools",
       "properties": { "type": "dirt" },
+      "weight": 0.45,
+      "dimensions": {
+        "length": 25.7,
+        "width": 12.3,
+        "height": 4.5
+      },
       "discounts": [
         {
           "quantity": 2,
@@ -97,18 +113,34 @@
       "title": "Digital Humidity Gauge",
       "description": "High-precision digital humidity meter for monitoring isopod habitat conditions.",
       "price": 29.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Tools",
       "properties": { "type": "measuring" },
+      "weight": 0.12,
+      "dimensions": {
+        "length": 8.5,
+        "width": 6.0,
+        "height": 2.3
+      },
       "discounts": []
     },
     {
       "title": "Premium Rubber Ducky Isopods (5 Pack)",
       "description": "Rare and adorable rubber ducky isopods, known for their unique yellow coloration and friendly temperament. Perfect for collectors!",
       "price": 89.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Isopods",
       "properties": { "breed": "rubber ducky" },
+      "weight": 0.05,
+      "dimensions": {
+        "length": 7.6,
+        "width": 5.8,
+        "height": 4.2
+      },
       "discounts": [
         {
           "quantity": 2,
@@ -121,9 +153,17 @@
       "title": "Dairy Cow Isopods (10 Pack)",
       "description": "Popular dairy cow isopods with striking black and white patterns. Excellent cleanup crew and very prolific breeders.",
       "price": 24.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Isopods",
       "properties": { "breed": "dairy cow" },
+      "weight": 0.08,
+      "dimensions": {
+        "length": 9.1,
+        "width": 6.2,
+        "height": 4.5
+      },
       "discounts": [
         {
           "quantity": 3,
@@ -136,18 +176,34 @@
       "title": "Powder Blue Isopods (5 Pack)",
       "description": "Beautiful powder blue isopods with a stunning pale blue coloration. Peaceful and easy to care for.",
       "price": 34.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Isopods",
       "properties": { "breed": "powder blue" },
+      "weight": 0.06,
+      "dimensions": {
+        "length": 8.4,
+        "width": 5.9,
+        "height": 4.0
+      },
       "discounts": []
     },
     {
       "title": "Panda King Isopods (3 Pack)",
       "description": "Rare panda king isopods with distinctive black and white markings. A must-have for serious collectors.",
       "price": 79.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Isopods",
       "properties": { "breed": "panda king" },
+      "weight": 0.04,
+      "dimensions": {
+        "length": 7.2,
+        "width": 5.5,
+        "height": 3.8
+      },
       "discounts": [
         {
           "quantity": 2,
@@ -160,9 +216,17 @@
       "title": "Bio-Active Terrarium Kit",
       "description": "Complete setup for a thriving isopod habitat. Includes substrate, cork bark, moss, and leaf litter.",
       "price": 49.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Accessories",
       "properties": { "type": "habitat" },
+      "weight": 2.5,
+      "dimensions": {
+        "length": 30.5,
+        "width": 20.3,
+        "height": 15.2
+      },
       "discounts": [
         {
           "quantity": 2,
@@ -175,18 +239,34 @@
       "title": "LED Habitat Light System",
       "description": "Advanced LED lighting system with day/night cycle programming. Perfect for planted terrariums.",
       "price": 59.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Accessories",
       "properties": { "type": "lighting" },
+      "weight": 0.85,
+      "dimensions": {
+        "length": 32.4,
+        "width": 6.8,
+        "height": 3.5
+      },
       "discounts": []
     },
     {
       "title": "Premium Substrate Mix",
       "description": "Professional-grade substrate mix specially formulated for isopods. Rich in organic matter and minerals.",
       "price": 19.99,
-      "images": ["https://via.placeholder.com/500"],
+      "images": [
+        "https://i.etsystatic.com/8159933/r/il/81546c/5396275512/il_794xN.5396275512_20fh.jpg"
+      ],
       "categoryName": "Accessories",
       "properties": { "type": "substrate" },
+      "weight": 4.5,
+      "dimensions": {
+        "length": 25.0,
+        "width": 18.0,
+        "height": 10.0
+      },
       "discounts": [
         {
           "quantity": 4,

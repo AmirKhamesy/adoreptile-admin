@@ -55,6 +55,18 @@ export default async function handle(req, res) {
         if (!existingProduct) {
           await Product.create(productToCreate);
           productsAdded++;
+        } else {
+          // Update existing product with new weight and dimensions
+          await Product.updateOne(
+            { _id: existingProduct._id },
+            {
+              $set: {
+                weight: productToCreate.weight,
+                dimensions: productToCreate.dimensions,
+                images: productToCreate.images,
+              },
+            }
+          );
         }
       }
 
