@@ -117,17 +117,18 @@ export default function ShippingBoxForm({ box, onSave, onCancel, isLoading }) {
       </div>
 
       <div className="mb-4">
-        <label className="flex items-center gap-2">
+        <label className="flex items-center  text-sm">
           <input
             type="checkbox"
+            className="m-2 w-4 h-4 justify-center"
             checked={isDefault}
             onChange={(ev) => setIsDefault(ev.target.checked)}
           />
-          Set as default box
+          <span className="text-sm">Set as default box</span>
         </label>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2 mt-4">
         <button type="submit" className="btn-primary" disabled={isLoading}>
           {isLoading ? <Spinner /> : box ? "Update" : "Create"}
         </button>
