@@ -1,15 +1,23 @@
 import Layout from "@/components/Layout";
 import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import axios from "axios";
 import Spinner from "@/components/Spinner";
 import { withSwal } from "react-sweetalert2";
 import SeedProgress from "@/components/SeedProgress";
+
+const PickupLocationPicker = dynamic(
+  () => import("@/components/PickupLocationPicker"),
+  { ssr: false }
+);
 
 function SettingsPage({ swal }) {
   const [products, setProducts] = useState([]);
   const [featuredProductId, setFeaturedProductId] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [shippingFee, setShippingFee] = useState("");
+  const [pickupLocation, setPickupLocation] = useState(null);
+  const [pickupTitle, setPickupTitle] = useState("");
   const [seedSteps, setSeedSteps] = useState([]);
   const [isSeeding, setIsSeeding] = useState(false);
 
@@ -30,6 +38,12 @@ function SettingsPage({ swal }) {
     await axios.get("/api/settings?name=shippingFee").then((res) => {
       setShippingFee(res.data.value);
     });
+    await axios.get("/api/settings?name=pickupLocation").then((res) => {
+      if (res.data?.value) {
+        setPickupLocation(res.data.value);
+        setPickupTitle(res.data.value.title || "");
+      }
+    });
   }
 
   async function saveSettings() {
@@ -41,6 +55,10 @@ function SettingsPage({ swal }) {
     await axios.put("/api/settings", {
       name: "shippingFee",
       value: shippingFee,
+    });
+    await axios.put("/api/settings", {
+      name: "pickupLocation",
+      value: pickupLocation ? { ...pickupLocation, title: pickupTitle } : null,
     });
     setIsLoading(false);
     await swal.fire({
@@ -194,7 +212,28 @@ function SettingsPage({ swal }) {
             value={shippingFee}
             onChange={(ev) => setShippingFee(ev.target.value)}
           />
-          <div className="flex justify-between">
+
+          <h2>Pick Up Location</h2>
+          <p style={{ fontSize: "0.8rem", color: "#6b7280", marginBottom: "0.75rem" }}>
+            Set a location where customers can pick up their order for free. Leave blank to disable the pickup option.
+          </p>
+          <label>Location Title (e.g. "Our Store", "Warehouse")</label>
+          <input
+            type="text"
+            placeholder="e.g. Our Store"
+            value={pickupTitle}
+            onChange={(ev) => setPickupTitle(ev.target.value)}
+          />
+          <label>Pin location on map</label>
+          <p style={{ fontSize: "0.75rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+            Search for an address or click/drag the pin on the map to set the exact pickup spot.
+          </p>
+          <PickupLocationPicker
+            value={pickupLocation}
+            onChange={(loc) => setPickupLocation(loc)}
+          />
+
+          <div className="flex justify-between" style={{ marginTop: "1.5rem" }}>
             <button onClick={saveSettings} className="btn-primary">
               Save settings
             </button>

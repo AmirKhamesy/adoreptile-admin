@@ -16,6 +16,7 @@
     "date-fns": "^2.29.3",
     "eslint": "8.35.0",
     "eslint-config-next": "13.2.3",
+    "leaflet": "^1.9.4",
     "mime-types": "^2.1.35",
     "mongodb": "^5.1.0",
     "mongoose": "^7.0.0",
