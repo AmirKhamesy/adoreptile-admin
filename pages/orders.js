@@ -5,6 +5,7 @@ import Spinner from "@/components/Spinner";
 
 function OrderTypeBadge({ orderType }) {
   const isPickup = orderType === "pickup";
+  const isShipping = orderType === "delivery";
   return (
     <span
       style={{
@@ -25,11 +26,20 @@ function OrderTypeBadge({ orderType }) {
           <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" />
         </svg>
       ) : (
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <path d="M5 12h14M12 5l7 7-7 7" />
         </svg>
       )}
-      {isPickup ? "Pickup" : "Delivery"}
+      {isPickup ? "Pickup" : isShipping ? "Shipping" : "Delivery"}
     </span>
   );
 }
@@ -50,12 +60,31 @@ function PaidBadge({ paid }) {
       }}
     >
       {paid ? (
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
           <polyline points="20 6 9 17 4 12" />
         </svg>
       ) : (
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+        <svg
+          width="11"
+          height="11"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="3"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
         </svg>
       )}
       {paid ? "Paid" : "Unpaid"}
@@ -88,9 +117,24 @@ export default function OrdersPage() {
 
   return (
     <Layout>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.5rem" }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          marginBottom: "1.5rem",
+        }}
+      >
         <h1 style={{ margin: 0 }}>Orders</h1>
-        <span style={{ fontSize: "0.8rem", color: "#6b7280", background: "#f3f4f6", padding: "4px 12px", borderRadius: "20px" }}>
+        <span
+          style={{
+            fontSize: "0.8rem",
+            color: "#6b7280",
+            background: "#f3f4f6",
+            padding: "4px 12px",
+            borderRadius: "20px",
+          }}
+        >
           {orders.length} total
         </span>
       </div>
@@ -102,8 +146,20 @@ export default function OrdersPage() {
       )}
 
       {!isLoading && orders.length === 0 && (
-        <div style={{ textAlign: "center", padding: "4rem 0", color: "#9ca3af" }}>
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ margin: "0 auto 1rem", display: "block", opacity: 0.4 }}>
+        <div
+          style={{ textAlign: "center", padding: "4rem 0", color: "#9ca3af" }}
+        >
+          <svg
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ margin: "0 auto 1rem", display: "block", opacity: 0.4 }}
+          >
             <path d="M9 17H15M9 13H15M9 9H10M19 21H5C3.89543 21 3 20.1046 3 19V5C3 3.89543 3.89543 3 5 3H19C20.1046 3 21 3.89543 21 5V19C21 20.1046 20.1046 21 19 21Z" />
           </svg>
           <p style={{ fontSize: "0.95rem" }}>No orders yet</p>
@@ -111,7 +167,9 @@ export default function OrdersPage() {
       )}
 
       {!isLoading && orders.length > 0 && (
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <div
+          style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}
+        >
           {orders.map((order) => (
             <div
               key={order._id}
@@ -129,10 +187,22 @@ export default function OrdersPage() {
             >
               {/* Date + badges */}
               <div>
-                <div style={{ fontSize: "0.78rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "#6b7280",
+                    marginBottom: "0.5rem",
+                  }}
+                >
                   {formatDate(order.createdAt)}
                 </div>
-                <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "4px",
+                  }}
+                >
                   <PaidBadge paid={order.paid} />
                   <OrderTypeBadge orderType={order.orderType} />
                 </div>
@@ -140,15 +210,33 @@ export default function OrdersPage() {
 
               {/* Recipient */}
               <div>
-                <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#111827", marginBottom: "0.2rem" }}>
+                <div
+                  style={{
+                    fontSize: "0.85rem",
+                    fontWeight: 600,
+                    color: "#111827",
+                    marginBottom: "0.2rem",
+                  }}
+                >
                   {order.name}
                 </div>
-                <div style={{ fontSize: "0.78rem", color: "#6b7280", marginBottom: "0.15rem" }}>
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "#6b7280",
+                    marginBottom: "0.15rem",
+                  }}
+                >
                   {order.email}
                 </div>
                 {order.orderType !== "pickup" && (
                   <div style={{ fontSize: "0.78rem", color: "#9ca3af" }}>
-                    {[order.streetAddress, order.city, order.postalCode, order.country]
+                    {[
+                      order.streetAddress,
+                      order.city,
+                      order.postalCode,
+                      order.country,
+                    ]
                       .filter(Boolean)
                       .join(", ")}
                   </div>
@@ -156,27 +244,51 @@ export default function OrdersPage() {
               </div>
 
               {/* Products */}
-              <div style={{ display: "flex", flexDirection: "column", gap: "3px" }}>
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "3px" }}
+              >
                 {order.line_items?.map((l, i) => (
                   <div
                     key={`${l.price_data?.product_data?.name}-${i}`}
                     style={{ fontSize: "0.8rem", color: "#374151" }}
                   >
-                    <span style={{ fontWeight: 500 }}>{l.price_data?.product_data?.name}</span>
-                    <span style={{ color: "#9ca3af", marginLeft: "4px" }}>× {l.quantity}</span>
+                    <span style={{ fontWeight: 500 }}>
+                      {l.price_data?.product_data?.name}
+                    </span>
+                    <span style={{ color: "#9ca3af", marginLeft: "4px" }}>
+                      × {l.quantity}
+                    </span>
                   </div>
                 ))}
               </div>
 
               {/* Order total */}
               <div style={{ textAlign: "right", minWidth: "70px" }}>
-                <div style={{ fontSize: "1rem", fontWeight: 700, color: "#111827" }}>
+                <div
+                  style={{
+                    fontSize: "1rem",
+                    fontWeight: 700,
+                    color: "#111827",
+                  }}
+                >
                   $
                   {order.line_items
-                    ?.reduce((sum, l) => sum + (l.price_data?.unit_amount * l.quantity) / 100, 0)
+                    ?.reduce(
+                      (sum, l) =>
+                        sum + (l.price_data?.unit_amount * l.quantity) / 100,
+                      0,
+                    )
                     .toFixed(2)}
                 </div>
-                <div style={{ fontSize: "0.7rem", color: "#9ca3af", marginTop: "2px" }}>USD</div>
+                <div
+                  style={{
+                    fontSize: "0.7rem",
+                    color: "#9ca3af",
+                    marginTop: "2px",
+                  }}
+                >
+                  USD
+                </div>
               </div>
             </div>
           ))}
