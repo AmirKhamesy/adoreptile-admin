@@ -11,6 +11,11 @@ const PickupLocationPicker = dynamic(
   { ssr: false }
 );
 
+const DeliveryRadiusPicker = dynamic(
+  () => import("@/components/DeliveryRadiusPicker"),
+  { ssr: false }
+);
+
 function SettingsPage({ swal }) {
   const [products, setProducts] = useState([]);
   const [featuredProductId, setFeaturedProductId] = useState("");
@@ -18,6 +23,11 @@ function SettingsPage({ swal }) {
   const [shippingFee, setShippingFee] = useState("");
   const [pickupLocation, setPickupLocation] = useState(null);
   const [pickupTitle, setPickupTitle] = useState("");
+  const [deliverySettings, setDeliverySettings] = useState({
+    useSameAsPickup: true,
+    location: null,
+    maxRadiusKm: 20,
+  });
   const [seedSteps, setSeedSteps] = useState([]);
   const [isSeeding, setIsSeeding] = useState(false);
 
@@ -44,6 +54,11 @@ function SettingsPage({ swal }) {
         setPickupTitle(res.data.value.title || "");
       }
     });
+    await axios.get("/api/settings?name=deliverySettings").then((res) => {
+      if (res.data?.value) {
+        setDeliverySettings(res.data.value);
+      }
+    });
   }
 
   async function saveSettings() {
@@ -59,6 +74,10 @@ function SettingsPage({ swal }) {
     await axios.put("/api/settings", {
       name: "pickupLocation",
       value: pickupLocation ? { ...pickupLocation, title: pickupTitle } : null,
+    });
+    await axios.put("/api/settings", {
+      name: "deliverySettings",
+      value: deliverySettings,
     });
     setIsLoading(false);
     await swal.fire({
@@ -231,7 +250,85 @@ function SettingsPage({ swal }) {
           <PickupLocationPicker
             value={pickupLocation}
             onChange={(loc) => setPickupLocation(loc)}
+            radiusKm={deliverySettings.useSameAsPickup ? deliverySettings.maxRadiusKm : undefined}
           />
+
+          <h2 style={{ marginTop: "2rem" }}>Delivery</h2>
+          <p style={{ fontSize: "0.8rem", color: "#6b7280", marginBottom: "0.75rem" }}>
+            Set a delivery zone so customers can choose home delivery. The blue circle on the map shows the area you cover.
+          </p>
+
+          <label
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem", cursor: "pointer", marginBottom: "1rem" }}
+          >
+            <input
+              type="checkbox"
+              checked={deliverySettings.useSameAsPickup}
+              onChange={(ev) =>
+                setDeliverySettings((prev) => ({
+                  ...prev,
+                  useSameAsPickup: ev.target.checked,
+                }))
+              }
+              style={{ width: "1rem", height: "1rem" }}
+            />
+            Use same address as pickup location
+          </label>
+
+          {deliverySettings.useSameAsPickup && (
+            <div style={{ marginBottom: "0.75rem" }}>
+              <p style={{ fontSize: "0.8rem", color: "#6b7280", margin: "0 0 0.75rem" }}>
+                The delivery radius is shown on the pickup map above. Drag the slider to adjust it.
+              </p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.375rem" }}>
+                <label style={{ marginBottom: 0 }}>Max delivery radius</label>
+                <span style={{ fontSize: "0.95rem", fontWeight: 600, color: "#3b82f6" }}>
+                  {deliverySettings.maxRadiusKm} km
+                </span>
+              </div>
+              <input
+                type="range"
+                min="1"
+                max="150"
+                step="1"
+                value={deliverySettings.maxRadiusKm}
+                onChange={(ev) =>
+                  setDeliverySettings((prev) => ({
+                    ...prev,
+                    maxRadiusKm: Number(ev.target.value),
+                  }))
+                }
+                style={{ width: "100%", accentColor: "#3b82f6" }}
+              />
+              <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.7rem", color: "#9ca3af" }}>
+                <span>1 km</span>
+                <span>150 km</span>
+              </div>
+            </div>
+          )}
+
+          {!deliverySettings.useSameAsPickup && (
+            <>
+              <label>Pin your delivery origin on the map</label>
+              <p style={{ fontSize: "0.75rem", color: "#6b7280", marginBottom: "0.5rem" }}>
+                Search for an address or click/drag the pin. Drag the radius slider to set how far you&apos;ll deliver.
+              </p>
+              <DeliveryRadiusPicker
+                value={
+                  deliverySettings.location
+                    ? { ...deliverySettings.location, radiusKm: deliverySettings.maxRadiusKm }
+                    : { radiusKm: deliverySettings.maxRadiusKm }
+                }
+                onChange={(loc) =>
+                  setDeliverySettings((prev) => ({
+                    ...prev,
+                    location: { lat: loc.lat, lng: loc.lng, address: loc.address },
+                    maxRadiusKm: loc.radiusKm ?? prev.maxRadiusKm,
+                  }))
+                }
+              />
+            </>
+          )}
 
           <div className="flex justify-between" style={{ marginTop: "1.5rem" }}>
             <button onClick={saveSettings} className="btn-primary">

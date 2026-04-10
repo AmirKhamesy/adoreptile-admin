@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 
-export default function PickupLocationPicker({ value, onChange }) {
+export default function PickupLocationPicker({ value, onChange, radiusKm }) {
   const mapRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
+  const circleRef = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [searching, setSearching] = useState(false);
 
@@ -17,6 +18,17 @@ export default function PickupLocationPicker({ value, onChange }) {
     valueRef.current = value;
     onChangeRef.current = onChange;
   });
+
+  // Update circle when radiusKm prop changes
+  useEffect(() => {
+    if (!circleRef.current) return;
+    if (radiusKm) {
+      circleRef.current.setRadius(radiusKm * 1000);
+      circleRef.current.setStyle({ opacity: 1, fillOpacity: 0.2 });
+    } else {
+      circleRef.current.setStyle({ opacity: 0, fillOpacity: 0 });
+    }
+  }, [radiusKm]);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -65,7 +77,19 @@ export default function PickupLocationPicker({ value, onChange }) {
         draggable: true,
       }).addTo(map);
 
+      const initialRadius = radiusKm || 20;
+      const circle = L.circle([defaultLat, defaultLng], {
+        radius: initialRadius * 1000,
+        color: "#3b82f6",
+        fillColor: "#93c5fd",
+        fillOpacity: radiusKm ? 0.2 : 0,
+        opacity: radiusKm ? 1 : 0,
+        weight: 2,
+      }).addTo(map);
+      circleRef.current = circle;
+
       const handlePositionChange = async (lat, lng) => {
+        circle.setLatLng([lat, lng]);
         try {
           const res = await fetch(
             `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
@@ -102,6 +126,7 @@ export default function PickupLocationPicker({ value, onChange }) {
         mapInstanceRef.current.remove();
         mapInstanceRef.current = null;
         markerRef.current = null;
+        circleRef.current = null;
       }
     };
   }, []);
@@ -123,6 +148,7 @@ export default function PickupLocationPicker({ value, onChange }) {
         if (mapInstanceRef.current && markerRef.current) {
           mapInstanceRef.current.setView([lat, lng], 16);
           markerRef.current.setLatLng([lat, lng]);
+          circleRef.current?.setLatLng([lat, lng]);
         }
         onChangeRef.current({
           ...(valueRef.current || {}),
