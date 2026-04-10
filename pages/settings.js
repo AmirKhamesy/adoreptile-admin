@@ -217,7 +217,7 @@ function SettingsPage({ swal }) {
           <p style={{ fontSize: "0.8rem", color: "#6b7280", marginBottom: "0.75rem" }}>
             Set a location where customers can pick up their order for free. Leave blank to disable the pickup option.
           </p>
-          <label>Location Title (e.g. "Our Store", "Warehouse")</label>
+          <label>Location Title (e.g. &quot;Our Store&quot;, &quot;Warehouse&quot;)</label>
           <input
             type="text"
             placeholder="e.g. Our Store"
